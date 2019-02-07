@@ -15,10 +15,10 @@ var Environments = {
     dhubknex: {
       client: 'mssql',
       connection: {
-        host: '10.204.76.78',
-        user: 'Donald',
-        password: 'XLinfoadmin@123', // MBS shouldn't store credentials in standard github file, but ok for now
-        database: 'DHUB',
+        host: 'A.B.C.D',
+        user: 'INSERT_USERNAME_HERE',
+        password: 'INSERT_PASSWORD_HERE', // MBS shouldn't store credentials in standard github file, but ok for now
+        database: 'INSERT_DATABASE_HERE',
         options: { encrypt: true, debug: { data: true, packet: true } },
       },
       pool: {
