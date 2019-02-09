@@ -23,6 +23,13 @@ var Constants = {
     defaultOffset: 0,
     defaultOrderby: { column:'Id', order: 'DESC' },
   },
+  HTTP_RESPONSE_STATUS: {
+    OK: { status: 200 },
+    BAD_REQUEST: { status: 400, message: 'Unable to understand request' },
+    NOT_AUTHORIZED: { status: 401 },
+    FORBIDDEN: { status: 403, },
+    INTERNAL_SERVER_ERROR: { status: 500 },
+  },
 };
 
 module.exports = Constants;
