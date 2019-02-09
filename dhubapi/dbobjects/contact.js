@@ -20,6 +20,18 @@ var FieldSetExtensions = {
           .innerJoin( 'Account', 'Contact.AccountId', '=', 'Account.Id' );
       },
   },
+  details: {
+    joinFn: function( knexcmd ) {
+        return knexcmd
+          .innerJoin('RecordType', 'Contact.RecordTypeId', '=', 'RecordType.Id' )
+          .innerJoin( 'Account', 'Contact.AccountId', '=', 'Account.Id' )
+          .innerJoin( 'User as Owner', 'Contact.OwnerId', '=', 'Owner.Id' )
+          .innerJoin( 'User as CreatedBy', 'Contact.CreatedById', '=', 'CreatedBy.Id' )
+          .innerJoin( 'User as LastModifiedBy', 'Contact.LastModifiedById', '=', 'LastModifiedBy.Id' )
+        ;
+      },
+
+  },
 }
 
 class DhubContact extends Contact {
