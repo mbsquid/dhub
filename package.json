@@ -2,13 +2,13 @@
   "name": "optum",
   "version": "1.0.0",
   "description": "optum code",
-  "main": "server/lib/dhubapi.js",
+  "main": "dhubapi/lib/dhubapi.js",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cd server; node lib/dhubapi.js"
+    "start": "cd dhubapi; node lib/dhubapi.js"
   },
   "repository": {
     "type": "git",
