@@ -34,7 +34,7 @@ var app = express();
 
 
 // setup SSL - need better for production environment
-var httpsPort = config.httpPort,
+var httpsPort = process.env.PORT || config.httpPort,
   ssloptions = {
     key: fs.readFileSync('certs/server.key'),
     cert: fs.readFileSync('certs/server.crt'),

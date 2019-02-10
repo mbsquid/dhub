@@ -8,14 +8,16 @@ var _ = require( 'underscore' );
 var constants = require( '../lib/constants.js' );
 // logging
 var mylog = require('../lib/logger-server.js').getLogger( 'dbapi' );
+// access control
+var Access = require( '../lib/accesscontrol.js' );
 
 // objects
 var Contact = require( '../dbobjects/contact.js' );
 
 
 const APIGlobals = {
-  goodTokens: [ 'fieldset', 'filter', 'offset', 'limit', 'orderby' ],
-  badTokens: [ ], // for things we never want in there - ie overriding userId, etc
+  goodTokens: [ 'fieldset', 'filter', 'offset', 'limit', 'orderby', 'authToken' ],
+  badTokens: [ 'thisUserId', 'thisUserProfile' ], // for things we never want in there - ie overriding userId, etc
   objects: {
     contact: Contact,
     account: 'ACCOUNT',
@@ -34,12 +36,15 @@ function parseRequest( req ) {
     orderby: null,
     unknowns : {},
     parseError: null,
+    authToken: null,
+    user: null,
   };
 
   // get object type & id (if there)
   var path = req.path.split('\/');
   rtn.objectType = path.length > 1 ? path[1] : null;
   rtn.objectId = path.length > 2 ? path[2] : null;
+  rtn.user = req.optum.userInfo;
 
   // Remove/delete bad tokens
   APIGlobals.badTokens.forEach( function( v ) {
@@ -94,6 +99,10 @@ function okResponse( res, dbresp ) {
   return res.json( rtnjson );
 }
 
+// Make sure user is authenticated (not authorized)
+router.use( function( req, res, next ) {
+  Access.authenticateUser( req, res, next );
+});
 
 router.get('*', function( req, res, next ) {
   var parsed = parseRequest( req );
@@ -105,8 +114,13 @@ router.get('*', function( req, res, next ) {
   if( !ObjClass ) {
     return errorResponse ( res, { status: 'ERROR', message: 'Unknown object type: ' + parsed.objectType } );
   }
-
   var obj = new ObjClass( { id: parsed.objectId } );
+
+  var authmsg  = Access.authorizeProfile( req.optum.userInfo.profileName, obj.metadata.type, Access.constants.CRUDLevels.READ );
+  if( authmsg ) {
+    return errorResponse ( res, { status: 'ERROR', message: authmsg } );
+  }
+
   try {
     obj.dbGet( parsed )
       .then(function( dbresp ) {
@@ -115,13 +129,11 @@ router.get('*', function( req, res, next ) {
 
       })
       .catch( function( e ) {
-        console.log('MBS DBAPI CATCH e1');
         mylog.debug('database error:', e );
         return errorResponse ( res, { status: 'ERROR', message: e.originalError.message } );
       });
   }
   catch( e ) {
-    console.log('MBS DBAPI CATCH e2');
     return errorResponse ( res, { status: 'ERROR', message: e } );
   }
 

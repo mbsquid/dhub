@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require( 'underscore' );
-var mylog = require( '../../common/lib/logger.js' ).getLogger( 'server.lib.model' );
+var mylog = require( '../../common/lib/logger.js' ).getLogger( 'dhubapi.lib.model' );
 const constants = require( './constants.js' );
 var knex = require( './dhub.js' );
 var moment = require( 'moment' );
@@ -79,7 +79,7 @@ var dbGet = function( model, parsed ) {
 
   var whereParams = _.extend( {}, filter.where || {}, parsed.unknowns ); // only want not deleted
   whereParams[ model.metadata.type + '.IsDeleted' ] = false;
-  if( parsed.objectId ) whereParams.Id = parsed.objectId;
+  if( parsed.objectId ) whereParams[ model.metadata.type + '.DHUB_Id__c' ] = parsed.objectId;
 
   // Basic query - includes where clause (based on query parameters), limit, offset, & order by [based on query and/or filter and/or globals
   var kcmd =  knex.select( fieldset.fields ).from( model.metadata.type )
