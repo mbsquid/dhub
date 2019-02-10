@@ -1,4 +1,10 @@
 'use strict';
+/* *****************************************************************************************
+Selects.js
+
+Define select/multiselect statements that can be used in input/output/validation functions
+
+** *****************************************************************************************/
 
 var constants = require( './constants.js' );
 
@@ -11,24 +17,24 @@ Define select options
 
 var Selects = {
   YN: {
-    UNSPECIFIED: { label: constants.UNKNOWN, value: constants.UNKNOWN },
+    UNSPECIFIED: { label: constants.UNSPECIFIED, value: constants.UNSPECIFIED },
     YES: { label: 'Yes', value: 'y' },
     NO: { label: 'No', value: 'n' },
   },
   YNBOOLEAN : {
-    UNSPECIFIED: { label: constants.UNKNOWN, value: null },
+    UNSPECIFIED: { label: constants.UNSPECIFIED, value: null },
     YES: { label: 'Yes', value: true },
     NO: { label: 'No', value: false },
   },
   GENDER: {
-    UNSPECIFIED: { label: constants.UNKNOWN, value: constants.UNKNOWN },
+    UNSPECIFIED: { label: constants.UNSPECIFIED, value: constants.UNSPECIFIED },
     MALE: { label: 'Male', value: 'Male' },
     FEMALE: { label: 'Female', value: 'Female' },
     UNKNOWN: { label: 'Unknown', value: 'Unknown' },
   },
   LANGUAGE: {
     // MBS NEED MORE LANGUAGES
-    UNSPECIFIED: { label: constants.UNKNOWN, value: constants.UNKNOWN },
+    UNSPECIFIED: { label: constants.UNSPECIFIED, value: constants.UNSPECIFIED },
     ENGLISH: { label: 'English', value: 'English' },
     SPANISH: { label: 'Spanish', value: 'Spanish' },
     FRENCH: { label: 'French', value: 'French' },
@@ -36,7 +42,7 @@ var Selects = {
     PIGLATIN: { label: 'igPay atinLay', value: 'PigLatin' },
   },
   US_TIMEZONE_NAMES: {
-    AMERICA_UNSPECIFIED: { label: constants.UNKNOWN, value: constants.UNKNOWN },
+    AMERICA_UNSPECIFIED: { label: constants.UNSPECIFIED, value: constants.UNSPECIFIED },
     AMERICA_ADAK: { label: 'America/Adak', value: 'America/Adak' },
     AMERICA_ANCHORAGE: { label: 'America/Anchorage', value: 'America/Anchorage' },
     AMERICA_BOISE: { label: 'America/Boise', value: 'America/Boise' },

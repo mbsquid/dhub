@@ -44,7 +44,7 @@ var BaseModelParms = {
       default: {
         label: 'All',
         fieldset: 'default',
-        order: 'Name ASC',
+        order: undefined,
         limit: constants.API.defaultLimit,
       }
     },
@@ -53,7 +53,8 @@ var BaseModelParms = {
 
 
 
-// For the constructor, extend the Backbone.Model with the metadata
+// For the constructor, extend the Backbone.Model with the metadata and turn it into an ES6 compliant class
+// Specific objects like "Contact" or "Account" should extend/subclass this class
 class BaseModel extends Backbone.Model {
   constructor( options, metadata ) {
 
