@@ -23,7 +23,7 @@ cd optum
 npm install
 ```
 
-After that, you should be ready to start the DHUB api server. .
+After that, you should be ready to start the DHUB api server.
 
 ## Starting
 
@@ -76,9 +76,9 @@ https://localhost:3001/api/contact?limit=8&recordtype.name=provider&orderby=last
 See the Authentication section to understand the `authToken` parameter.  Other query parameters that are important include:
 - `fieldset` - defines a set of fields/attributes to return on this query.  There are two fieldsets that are defined for every object (others may vary per object).  The fieldset `default` is the fieldset intended to return minimal information that we may want in a related list type display.  The fieldset `details` is intended as the fieldset for display of a detail record, where we show pretty much everything about a record (it should have pretty much all fields that may ever be of interest).  The `details` fieldset is the fieldset used when an object identifier is provided (so only a single record is returned).  The `default` fieldset is the default fieldset used when no `Id` is provided (so many records may be returned).  Supplying the `fieldset` parameter on a query string overrides those defaults.
 - `filter` - defines which records to return (defines a where clause)
-- `limit` - the maximum number of records to return.  Default is defined in defaultLimit in `common/lib/constants.js` (currently 25).  
-- `offset`- the offset in a list of records to return - ie return records starting at the 10th.  Defaults to defaultOffset in `common/lib/constants.js` (currently 0 - beginning of the list).
-- `orderby` - the order criteria for the records returned - ie `orderby=Contact.LastName` or `orderby=Contact.LastName,DESC,Contact.FirstName`.  The format of the value is `FIELD_NAME1[,ASC|DESC][,FIELD_NAME2][,ASC|DESC]...`.  
+- `limit` - the maximum number of records to return.  Default is defined in `defaultLimit` in `common/lib/constants.js` (currently 25).  
+- `offset`- the offset in a list of records to return - ie return records starting at the 10th.  Defaults to  `defaultOffset` in `common/lib/constants.js` (currently 0 - beginning of the list).
+- `orderby` - the order criteria for the records returned - ie `orderby=Contact.LastName` or `orderby=Contact.LastName,DESC,Contact.FirstName`.  The format of the value is `FIELD_NAME1[,ASC|DESC][,FIELD_NAME2][,ASC|DESC]...`.  If `ASC` or `DESC` is not provided, it is assumed to be `ASC`.  
 
 
 ### Response format
@@ -87,8 +87,8 @@ The format of a response is by default a JSON object (other formats may be added
 {
   "status": "OK",
   "rowsInfo" : { OBJECT },
-  parsed: { OBJECT },
-  objects: [{OBJECT1}, {OBJECT2}, ...]
+  "parsed": { OBJECT },
+  "objects": [ {OBJECT1}, {OBJECT2}, ...]
 }
 ```
 
