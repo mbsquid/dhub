@@ -25,7 +25,6 @@ var mylog = commonlogger.getLogger( 'app' );
 
 var knexdhub = require( './dhub.js' );
 
-var routes = require('../routes/index');
 var dbapi = require( '../routes/dbapi.js' );
 
 
@@ -64,7 +63,6 @@ app.use(express.static(path.join(__dirname, '/../../public')));
 
 // main router
 mylog.debug('Setting up routes ...');
-app.use('/', routes);
 app.use( Constants.API.rootPath, dbapi);
 
 
