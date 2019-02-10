@@ -1,12 +1,27 @@
 'use strict';
+/* ****************************************************************************
+model.js (dhub version)
 
+Define generic model for DHUB - Defines a mixin for the common model
+
+** ****************************************************************************/
+
+// Logging
+var mylog = require( '../../common/lib/logger.js' ).getLogger( 'dhub-model' );
 var _ = require( 'underscore' );
-var mylog = require( '../../common/lib/logger.js' ).getLogger( 'dhubapi.lib.model' );
 const constants = require( './constants.js' );
-var knex = require( './dhub.js' );
+// date/time manipulation
 var moment = require( 'moment' );
+// DHUB connectivity
+var knex = require( './dhub.js' );
 
 
+
+
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+// GET/read functions
 
 // Dates will be returned as strings like YYYY-MM-DD
 var processDbRow4Dates = function( dbrow, metadata) {
@@ -139,6 +154,16 @@ var dbGet = function( model, parsed ) {
 };
 
 
+
+
+
+
+
+
+
+
+
+//
 var BaseMixin = {
   dbGet: dbGet,
 }

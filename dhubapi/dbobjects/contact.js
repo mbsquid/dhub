@@ -1,12 +1,23 @@
 'use strict';
+/* ***********************************************************************************
+Contact.js
 
+This is the server-side model for the Contact object.  Main things to do here are
+1) Define fieldset extensions (ie define join functions for db to grab fields in fieldset
+2) Extend base Model class with specifics for this object
+** ***********************************************************************************/
+
+// Underscore is generally a good thing, especially for its extend fn
 var _ = require( 'underscore' );
-var mylog = require( '../../common/lib/logger.js' ).getLogger( 'dbcontact' );
-
-var Base = require( '../lib/model.js' );
+// Define logger for this module
+var mylog = require( '../../common/lib/logger.js' ).getLogger( 'dhubcontact' );
+// Get common DHUB Model object
+var BaseModel = require( '../lib/model.js' );
+// Get common Contact object
 var Contact = require( '../../common/models/contact.js' );
 
 
+// For each fieldset, make sure we have joins defined to get there
 var FieldSetExtensions = {
   test: { // just id and name
     joinFn: function( knexcmd ) {
@@ -34,6 +45,8 @@ var FieldSetExtensions = {
   },
 }
 
+
+// Extend common Contact model with DHUB API extensions.
 class DhubContact extends Contact {
   constructor( opts ) {
     super( opts );
@@ -47,9 +60,10 @@ class DhubContact extends Contact {
     }
   }
 
+  // the 'get' function for a contact just calls the generic 'get' function
   dbGet( parsedRequest ) {
     mylog.debug( 'dbGet: start: id:', parsedRequest.objectId, ' fieldset:', parsedRequest.fieldSet, ' filter:', parsedRequest.filter );
-    return Base.dbGet( this, parsedRequest);
+    return BaseModel.dbGet( this, parsedRequest);
   }
 
 }

@@ -1,8 +1,19 @@
 'use strict';
+/* **************************************************************************
+dhub.js
 
-var config = require( './config.js' ).current;
-var knex = require( 'knex' );
+Returns knex module specific to dhub configuration - all modules accessing dhub
+should use this so we have global connection pool
+** **************************************************************************/
+
+// Logging
 var mylog = require( '../../common/lib/logger.js' ).getLogger( 'dhub' );
+
+// Get current config for this environment
+var config = require( './config.js' ).current;
+
+// Get knex
+var knex = require( 'knex' );
 
 // Override with environment variables where given
 config.dhubknex.connection.host = process.env.DHUB_IP || config.dhubknex.connection.host;
@@ -24,5 +35,6 @@ dhubknex.select(knex.raw( '1 as TestOk' ))
     process.exit(1);
   });
 
+// Share and run
 module.exports = dhubknex;
 

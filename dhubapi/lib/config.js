@@ -1,6 +1,11 @@
-
 'use strict';
+/* *******************************************************************************
+config.js
 
+Defines configuration parameters based on the environment.
+
+Only current enviornment is development, but will add more (production, test, etc).
+** *******************************************************************************/
 
 var Environments = {
   development: {
@@ -32,11 +37,12 @@ var Environments = {
 };
 
 
+
+// Default current environment to 'development' if none provide via NODE_ENV
 var currentEnvironment = process.env.NODE_ENV || 'development' ;
 Environments.current = Environments [ currentEnvironment ];
 
+
+// export away
 module.exports = Environments;
-
-
-
 

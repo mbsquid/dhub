@@ -1,10 +1,10 @@
-
 'use strict';
+/* ***********************************************************************
+constants.js
 
-/************************************************************************
+Some dhubapi constants - expend/extend common constants
 
-Some constants
-*/
+** ***********************************************************************/
 
 var CommonConstants = require( '../../common/lib/constants.js' );
 var _ = require( 'underscore' );

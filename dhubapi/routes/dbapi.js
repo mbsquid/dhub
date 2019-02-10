@@ -1,4 +1,19 @@
 'use strict';
+/* **************************************************************************************
+dbapi.js
+
+This file defines the router for the DHUB API server.  For any request to appropriate URLs,
+we will perform the appropriate operations based on the type of request.  Currently we're
+only doing GET requests but that will change shortly.
+
+For GET requests we will:
+- parse the request (path and query parameters)
+- perform authentication to identify the user and confirm they have access
+- perform objectType authorization based on the user's profile to ensure they have
+  GET access to objects of this type
+- call the object specific dbGet function to return the requested data
+- forward that data to the requestor as a JSON object in a HTTP response
+** **************************************************************************************/
 
 // Node/express
 var express = require('express');
@@ -8,23 +23,32 @@ var _ = require( 'underscore' );
 var constants = require( '../lib/constants.js' );
 // logging
 var mylog = require('../lib/logger-server.js').getLogger( 'dbapi' );
-// access control
+// authentication & access control
 var Access = require( '../lib/accesscontrol.js' );
-
 // objects
 var Contact = require( '../dbobjects/contact.js' );
 
 
+
+// Some global variables/controls for the API
 const APIGlobals = {
+  // These are known/reserved query parameters that we look for specifically
   goodTokens: [ 'fieldset', 'filter', 'offset', 'limit', 'orderby', 'authToken' ],
-  badTokens: [ 'thisUserId', 'thisUserProfile' ], // for things we never want in there - ie overriding userId, etc
+  // These are query parameters that are specifically not allowed
+  badTokens: [ 'thisUserId', 'thisUserProfile' ],
+  // These are the list/map from objecttype in the URL to a specific Model
   objects: {
     contact: Contact,
-    account: 'ACCOUNT',
-    contactmethod: 'CONTACT_METHOD__C',
+    //account: Account,
+    //contactmethod: ContactMethod,
   },
 };
 
+
+
+
+// Function to parse the HTTP request into the parameters we care about (and don't).
+// Returns an object where each attribute of interest is specifically identified.
 function parseRequest( req ) {
   mylog.debug( 'parseAPIRequest:', req.originalUrl );
   var rtn = {
@@ -89,21 +113,27 @@ function parseRequest( req ) {
   return rtn;
 }
 
+// Send a response with a specific error, where the error should be a JSON object with status & message
 function errorResponse( res, e ) {
   mylog.debug( 'Returning error response:', e );
   return res.json ( e );
 }
 
+// Send a response where the dbresp is included as the JSON body of the HTTP response using a 200/OK status code
 function okResponse( res, dbresp ) {
   var rtnjson = _.extend( { status: 'OK' }, dbresp );
   return res.json( rtnjson );
 }
 
-// Make sure user is authenticated (not authorized)
+
+// Perform authentication - make sure user is authenticated somehow
 router.use( function( req, res, next ) {
   Access.authenticateUser( req, res, next );
 });
 
+
+// Map all GET URLs the same way, where the goal is to get to the dbGet function for
+// a specific Object model (like Contact)
 router.get('*', function( req, res, next ) {
   var parsed = parseRequest( req );
 
