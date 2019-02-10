@@ -9,7 +9,6 @@ var constants = require( '../../common/lib/constants.js' );
 var selects = require( '../../common/lib/selects.js' );
 var object = module.exports = { models: {}, collections: {}, views: {} };
 var logger = require( '../../common/lib/logger.js' ).getLogger('Contact');
-var knex = require( 'knex' ); // MBS shouldn't be here
 
 
 
