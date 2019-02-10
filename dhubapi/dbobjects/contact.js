@@ -4,7 +4,7 @@ var _ = require( 'underscore' );
 var mylog = require( '../../common/lib/logger.js' ).getLogger( 'dbcontact' );
 
 var Base = require( '../lib/model.js' );
-var Contact = require( '../../objects/contact/contact.js' );
+var Contact = require( '../../common/models/contact.js' );
 
 
 var FieldSetExtensions = {
