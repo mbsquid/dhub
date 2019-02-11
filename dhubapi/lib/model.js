@@ -107,6 +107,7 @@ var dbGet = function( model, parsed ) {
   if( fieldset.joinFn ) kcmd = fieldset.joinFn( kcmd );
 
 
+  mylog.debug( 'query:', kcmd.toString() );
   return new Promise( function( resolve, reject ) {
     // probably don't need transaction but...
     knex.transaction( function( trx ) {

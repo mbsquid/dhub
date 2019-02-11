@@ -1,4 +1,4 @@
-# optum
+# Optum Care Services / Housecalls Javascript Code
 
 This is a quick attempt at an express implementation for Optum Care Services DHUB APIs,
 with a further goal of developing a generic environment where we can develop common
@@ -81,7 +81,7 @@ See the Authentication section to understand the `authToken` parameter.  Other q
 - `orderby` - the order criteria for the records returned - ie `orderby=Contact.LastName` or `orderby=Contact.LastName,DESC,Contact.FirstName`.  The format of the value is `FIELD_NAME1[,ASC|DESC][,FIELD_NAME2][,ASC|DESC]...`.  If `ASC` or `DESC` is not provided, it is assumed to be `ASC`.  
 
 
-### Response format
+### Response Format
 The format of a response is by default a JSON object (other formats may be added in the future - HTML, CSV, etc).   The response generally looks like:
 ```
 {
@@ -93,8 +93,10 @@ The format of a response is by default a JSON object (other formats may be added
 ```
 
 Each field is described in more detail below:
-- `status` - a String, either `OK` or `ERROR`.  Will only be `ERROR` if the query was not able to be processed or executed.
-- `objects` - an Array of Objects, each representing one record. The attributes included in the Object depend on the object definition (in `common/models/OBJECTNAME.js`), and the `fieldset` parameter (provided in query string or defaulted). The length of the array (`objects.length`) indicates the actual number of objects returned.  
+- `status` - a String, either `OK` or `ERROR`.  Will only be `ERROR` if the query was not able to be processed or executed properly.
+- `objects` - an Array of Objects, each representing one record. The attributes included in the Object depend on the object definition (in `common/models/OBJECTNAME.js`), and the `fieldset` parameter (provided in query string or defaulted). The length of the array (`objects.length`) indicates the actual number of objects returned.  Some FYIs on the data format:
+  * `date` fields are returned in the format `YYYY-MM-DD`
+  * `datetime` fields are returned in the format `YYYY-MM-DDTHH:mm:ss.SSS[Z]` (so in UTC timezone, independent of user or database location)
 - `rowsInfo` - an Object that describes the number and position of rows, and can be used for pagination.  The attributes of the `rowsInfo` object include
   * `offset` - the offset of the returned values in the total list of possible matching values
   * `limit` - the number of rows returned
@@ -132,3 +134,6 @@ Each field is described in more detail below:
 The current authentication mechanism is by an authorization token (`authToken` in the query parameters).   Each user is assigned an `authToken` and when provided on the query string, it identifies the user as the requestor.  
 
 Note: this is not the only authentication mechanism that will be supported, just wanted something quick and dirty first.   
+
+
+## Authorization

@@ -27,6 +27,7 @@ var mylog = require('../lib/logger-server.js').getLogger( 'dbapi' );
 var Access = require( '../lib/accesscontrol.js' );
 // objects
 var Contact = require( '../dbobjects/contact.js' );
+var Account = require( '../dbobjects/account.js' );
 
 
 
@@ -39,7 +40,7 @@ const APIGlobals = {
   // These are the list/map from objecttype in the URL to a specific Model
   objects: {
     contact: Contact,
-    //account: Account,
+    account: Account,
     //contactmethod: ContactMethod,
   },
 };
