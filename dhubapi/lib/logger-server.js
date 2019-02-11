@@ -17,7 +17,7 @@ var logger = {
     log: console.log.bind(console),
     warn: console.warn.bind(console),
     error: console.error.bind(console),
-    debug: debug( 'optum:' + mod + ':' ),
+    debug: debug( 'DHUB:' + mod + ':' ),
   };
   logger.debug.log = console.log.bind(console);
   return logger;
