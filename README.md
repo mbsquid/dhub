@@ -1,6 +1,6 @@
-# Optum Care Services / Housecalls Javascript Code
+# DHUB Javascript Code
 
-This is a quick attempt at an express implementation for Optum Care Services DHUB APIs,
+This is a quick attempt at an express implementation for DHUB APIs,
 with a further goal of developing a generic environment where we can develop common
 server and client capabilities.
 
@@ -9,17 +9,17 @@ installed on your computer.
 
 ## Installing
 
-Use `github` to get the softawre, currently housed at `https://github.com/mbsquid/optum`.   You can clone the repository
+Use `github` to get the softawre, currently housed at `https://github.com/mbsquid/dhub`.   You can clone the repository
 using the normal git commands
 ```
-git clone git clone https://github.com/mbsquid/optum [LOCAL_DIR]
+git clone git clone https://github.com/mbsquid/dhub [LOCAL_DIR]
 ```
-where `LOCAL_DIR` is the directory you want to store the repository (if not `optum`).
+where `LOCAL_DIR` is the directory you want to store the repository (if not `dhub`).
 
 
 Use `npm` to install the required packages for the server.
 ```
-cd optum
+cd dhub
 npm install
 ```
 
@@ -32,7 +32,7 @@ The API server can be started with the usual npm startup commands
 npm start
 ```
 Some environment variables that may be of interest include:
-- `DEBUG` - can be used to enable debugging.  For development environments, you may want to use `DEBUG=*` (debugs everything) or `DEBUG=optum*` which debugs only the optum specific modules (not the installed modules). Defaults to nothing.
+- `DEBUG` - can be used to enable debugging.  For development environments, you may want to use `DEBUG=*` (debugs everything) or `DEBUG=dhub*` which debugs only the dhub specific modules (not the installed modules). Defaults to nothing.
 - `NODE_ENV` - sets the environment.  Defaults to `development`.  Can be used to load different configuration.  Configuration is currently set for different environments by the file `dhubapi/lib/config.js`.
 - `DHUB_IP` - set/override the IP address of the DHUB database as defaulted in `config.js`.  
 - `DHUB_USER`- set/override the username to access the DHUB database as defaulted in `config.js`.
