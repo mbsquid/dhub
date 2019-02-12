@@ -32,19 +32,18 @@ var AccessControlConstants = {
 
 
 // For first go-round, allow profile-based CRUD access per object type
-// MBS Need to get better than this... come back
+// For each object, can specificy true or false per operation, or can list record types that op can be performed for
 var Profiles = {
   admin: {  // Have CRUD access to all records...
+    // Contact record types: Individual, Provider, Other Contact, Vendor Contact
     Contact: { create: true, read: true, write: true, delete: true, },
+    // Account record types: Client, Employer Group, Group Number, Household, Individual, Insurance Plan, Line of Business, Master Client,
+                          // Member Identifier, Physician Group, Plan Group, Provider, Resource Vendor, Sub Client
     Account: { create: true, read: true, write: true, delete: true, },
-    Contact_Method__c: { create: true, read: true, write: true, delete: true, },
-    Membership__c: { create: true, read: true, write: true, delete: true, },
   },
   readonly: { // read access to all
     Contact: { read: true, },
     Account: { read: true, },
-    Contact_Method__c: { read: true, },
-    Membership__c: { read: true, },
   },
 };
 
@@ -72,12 +71,12 @@ var authenticateUserByToken = function( req, res, next ) {
       }
       else {
         mylog.debug( 'error trying to authenticate: #rows', rows.length );
-        return res.status( Constants.HTTP_RESPONSE_STATUS.FORBIDDEN.status ).json( { status: 'UNAUTHORIZED', message: 'User not authorized' } );
+        return res.status( Constants.HTTP_RESPONSE_STATUS.FORBIDDEN.status ).json( { status: 'UNAUTHORIZED', message: 'User not authenticated' } );
       }
     })
     .catch( function (err ) {
       mylog.debug( 'error trying to authenticate:', err );
-      return res.status( Constants.HTTP_RESPONSE_STATUS.FORBIDDEN.status ).json( { status: 'UNAUTHORIZED', message: 'User not authorized' } );
+      return res.status( Constants.HTTP_RESPONSE_STATUS.FORBIDDEN.status ).json( { status: 'UNAUTHORIZED', message: 'User not authenticated' } );
     });
 };
 
@@ -111,11 +110,41 @@ var authorizeProfile = function( profileName, object, operation ) {
 
 
 
+
+var addProfileJoins = function( profileName, object, operation, knexcmd ) {
+  mylog.debug( 'addProfileJoins for', profileName, 'on', object, 'op', operation );
+  var profile = Profiles[ profileName ], cruds = profile[ object ], opcrud = cruds[ operation ];
+
+  // If crud is false/empty, add impossible inner join
+  if( !opcrud ) knexcmd.innerJoin( 'RecordType as AuthRecordType', 'AuthRecordType.Name', '=', 'RecordTypeNotExist' );
+  else if( Array.isArray( opcrud ) && opcrud.length > 0 ) {
+    // If crud is Array, add clauses for allowable record types
+    mylog.debug( 'opcrud is array ' );
+    knexcmd.innerJoin( 'RecordType as AuthRecordType', function() {
+      this.on( 'AuthRecordType.Id', '=', object + '.RecordTypeId' );
+      //this.on('AuthRecordType.Name', '=', dhubknex.raw( '?', [ opcrud[0] ] ) );
+      this.andOn( function() {
+        this.on('AuthRecordType.Name', '=', dhubknex.raw( '?', [ opcrud[0] ] ) );
+        for( var i = 1; i < opcrud.length; i++ ) this.orOn( 'AuthRecordType.Name', '=', dhubknex.raw( '?', [ opcrud[i] ] ) );
+      });
+    });
+
+  }
+  else if( opcrud === true ) {
+    // Nothing required - have full access to all record types
+  }
+  else {
+    mylog.debug( 'opcrud is unknown value type:', opcrud );
+  }
+};1
+
+
 // What we want to export
 var AccessExports = {
   constants: AccessControlConstants,
   authenticateUser: authenticateUser,
   authorizeProfile: authorizeProfile,
+  addProfileJoins: addProfileJoins,
 }
 
 module.exports = AccessExports;

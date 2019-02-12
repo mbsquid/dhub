@@ -14,7 +14,8 @@ const constants = require( './constants.js' );
 var moment = require( 'moment' );
 // DHUB connectivity
 var knex = require( './dhub.js' );
-
+// Access control
+var Access = require( './accesscontrol.js' );
 
 
 
@@ -105,6 +106,10 @@ var dbGet = function( model, parsed ) {
 
   // Now we have to customize that query for whatever joins are required - use joinFn from fieldset or default
   if( fieldset.joinFn ) kcmd = fieldset.joinFn( kcmd );
+
+  // Add access control restrictions
+  console.log('PARSED:', parsed );
+  Access.addProfileJoins( parsed.user.profileName, model.metadata.type, 'read', kcmd );
 
 
   mylog.debug( 'query:', kcmd.toString() );
