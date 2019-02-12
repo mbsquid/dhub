@@ -137,3 +137,13 @@ Note: this is not the only authentication mechanism that will be supported, just
 
 
 ## Authorization
+
+Authorization is controlled both at the user/profile level and the record level.
+
+Each user has a profile, and the profile can be used to give general CREATE/READ/UPDATE/DELETE rights to user with each profile per object.   So, for example, users with a specific profile can be given READ access on certain objects and UPDATE access on others.  
+
+Further, when needed, CRUD access can be controlled per record type instead of per object.  So READ access can be granted for specific record types (but not all record types) on a specific object.  
+
+Profiles and CRUD access per Object/RecordType are defined in the file `dhubapi/lib/accesscontrol.js`.  
+
+MBS add on per-record access controls...
