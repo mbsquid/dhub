@@ -32,7 +32,8 @@ var AccessControlConstants = {
 
 
 // For first go-round, allow profile-based CRUD access per object type
-// For each object, can specificy true or false per operation, or can list record types that op can be performed for
+// For each object, can specificy true or false per operation, or can list record types that op can be performed for.
+// So can have "read: true", or "read: false", or "read: ['Individual', 'Provider'], etc
 var Profiles = {
   admin: {  // Have CRUD access to all records...
     // Contact record types: Individual, Provider, Other Contact, Vendor Contact
