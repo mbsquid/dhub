@@ -69,7 +69,7 @@ function parseRequest( req ) {
   var path = req.path.split('\/');
   rtn.objectType = path.length > 1 ? path[1] : null;
   rtn.objectId = path.length > 2 ? path[2] : null;
-  rtn.user = req.optum.userInfo;
+  rtn.user = req.dhub.userInfo;
 
   // Remove/delete bad tokens
   APIGlobals.badTokens.forEach( function( v ) {
@@ -147,7 +147,7 @@ router.get('*', function( req, res, next ) {
   }
   var obj = new ObjClass( { id: parsed.objectId } );
 
-  var authmsg  = Access.authorizeProfile( req.optum.userInfo.profileName, obj.metadata.type, Access.constants.CRUDLevels.READ );
+  var authmsg  = Access.authorizeProfile( req.dhub.userInfo.profileName, obj.metadata.type, Access.constants.CRUDLevels.READ );
   if( authmsg ) {
     return errorResponse ( res, { status: 'ERROR', message: authmsg } );
   }
