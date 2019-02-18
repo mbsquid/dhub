@@ -67,7 +67,7 @@ var authenticateUserByToken = function( req, res, next ) {
         console.warn( 'WARNING!!!!!  Profile table not currently in DHUB - everyone is admin' );
         rows[0].profileName = 'admin';
         //////////////////////////
-        if( !req.optum ) req.optum = { }; req.optum.userInfo = rows[0];
+        if( !req.dhub ) req.dhub = { }; req.dhub.userInfo = rows[0];
         next();
       }
       else {
@@ -77,7 +77,7 @@ var authenticateUserByToken = function( req, res, next ) {
     })
     .catch( function (err ) {
       mylog.debug( 'error trying to authenticate:', err );
-      return res.status( Constants.HTTP_RESPONSE_STATUS.FORBIDDEN.status ).json( { status: 'UNAUTHORIZED', message: 'User not authenticated' } );
+      return res.status( Constants.HTTP_RESPONSE_STATUS.INTERNAL_SERVER_ERROR.status ).json( { status: 'ERROR', message: 'Error while authenticating user' } );
     });
 };
 

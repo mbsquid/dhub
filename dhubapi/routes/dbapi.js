@@ -165,7 +165,7 @@ router.get('*', function( req, res, next ) {
       });
   }
   catch( e ) {
-    return errorResponse ( res, { status: 'ERROR', message: e } );
+    return errorResponse ( res, { status: 'ERROR2', message: e } );
   }
 
 
